@@ -1,10 +1,12 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+    devtool: 'source-map',
     entry: './src/index.jsx',
     output: {
         path: __dirname + '/dist',
-        filename: 'bundle.js'
+        filename: 'bundle.js',
+        publicPath: "/"
     },
     module: {
         rules: [{
@@ -19,5 +21,8 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.template.ejs'
         })
-    ]
+    ],
+    devServer: {
+        historyApiFallback: true,
+    }
 }
