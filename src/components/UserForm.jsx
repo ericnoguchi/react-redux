@@ -1,6 +1,13 @@
-import React, {
-    Component
-} from 'react';
+import React, { Component } from 'react';
+import styled from "styled-components";
+
+const Input = styled.input`
+  padding: 0.5em;
+  color: palevioletred;
+  background: papayawhip;
+  border: none;
+  border-radius: 3px;
+`;
 
 export class UserForm extends Component {
     constructor(props) {
@@ -24,7 +31,7 @@ export class UserForm extends Component {
     render() {
         return (
             <form onSubmit={(e) => { this.handleSubmit(e) }}>
-                <input
+                <Input
                     onChange={(e) => { this.handleChange(e) }}
                     value={this.state.user.fullName}
                 />
