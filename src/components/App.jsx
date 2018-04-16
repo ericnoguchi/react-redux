@@ -3,15 +3,15 @@ import React, {
 } from 'react';
 import { connect } from 'react-redux'
 
-import { PersonForm } from "./PersonForm.jsx";
-import { createPerson, deletePerson, updatePerson } from '../actions/people';
+import { UserForm } from "./UserForm.jsx";
+import { createUser, deleteUser, updateUser } from '../actions/users';
 
 class App extends Component {
 
-    getPersonDetails() {
+    getUserDetails() {
         const { props } = this;
-        const foundPerson = props.people.find(person => person.id == props.personId);
-        return foundPerson ? foundPerson.fullName : 'person not found';
+        const foundUser = props.users.find(user => user.id == props.userId);
+        return foundUser ? foundUser.fullName : 'user not found';
     }
 
     render() {
@@ -19,21 +19,21 @@ class App extends Component {
         return (
             <div className="main">
                 <ul>
-                    {props.people.map(person => {
+                    {props.users.map(user => {
                         return (
-                            <li className="item" key={person.id}>
-                                <div className="fullName">{person.id} - {person.fullName}</div>
-                                <PersonForm
-                                    person={{ ...person }}
-                                    onSubmit={(person) => props.updatePerson(person)} />
-                                <button onClick={() => props.deletePerson(person)} >x</button>
-                                <button onClick={() => props.loadPerson(person)}>Load</button>
+                            <li className="item" key={user.id}>
+                                <div className="fullName">{user.id} - {user.fullName}</div>
+                                <UserForm
+                                    user={{ ...user }}
+                                    onSubmit={(user) => props.updateUser(user)} />
+                                <button onClick={() => props.deleteUser(user)} >x</button>
+                                <button onClick={() => props.loadUser(user)}>Load</button>
                             </li>)
                     })}
                 </ul>
-                <PersonForm onSubmit={(person) => props.createPerson(person)} />
+                <UserForm onSubmit={(user) => props.createUser(user)} />
                 {
-                    props.personId && this.getPersonDetails()
+                    props.userId && this.getUserDetails()
                 }
             </div>
         );
@@ -44,19 +44,19 @@ class App extends Component {
 
 const mapStateToProps =
     ({
-        people,
-        personId
+        users,
+        userId
     }) =>
         ({
-            people,
-            personId
+            users,
+            userId
         });
 
 const mapDispatchToProps = dispatch => ({
-    deletePerson: person => { dispatch(deletePerson(person)); },
-    updatePerson: person => { dispatch(updatePerson(person)); },
-    createPerson: person => { dispatch(createPerson(person)); },
-    loadPerson: person => dispatch({ type: 'ROUTE_LOAD_PERSON', payload: { id: person.id } })
+    deleteUser: user => { dispatch(deleteUser(user)); },
+    updateUser: user => { dispatch(updateUser(user)); },
+    createUser: user => { dispatch(createUser(user)); },
+    loadUser: user => dispatch({ type: 'ROUTE_LOAD_USER', payload: { id: user.id } })
 });
 
 

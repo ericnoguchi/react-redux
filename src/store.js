@@ -12,8 +12,8 @@ import {
 } from 'redux-first-router';
 
 import initialState from "./initialState";
-import peopleReducer from './reducers/people';
-import personIdReducer from "./reducers/personId";
+import usersReducer from './reducers/users';
+import userIdReducer from "./reducers/userId";
 import routes from "./routes";
 
 const history = createHistory();
@@ -31,8 +31,8 @@ const {
 // ROOT REDUCER
 const rootReducer = combineReducers({
     location: routerReducer,
-    people: peopleReducer,
-    personId: personIdReducer,
+    users: usersReducer,
+    userId: userIdReducer,
 });
 
 // MIDDLEWARES

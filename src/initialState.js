@@ -1,6 +1,6 @@
 // INITIAL STATE
 export default {
-    people: [{
+    users: [{
             "id": 1,
             "fullName": "Allison Finch",
             "bool": true
