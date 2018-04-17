@@ -1,10 +1,8 @@
-import React, {
-    Component
-} from 'react';
-import { connect } from 'react-redux'
-
-import { UserForm } from "./UserForm.jsx";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { createUser, deleteUser, updateUser } from '../actions/users';
+import { UserForm } from "./UserForm.jsx";
+
 
 class App extends Component {
 
@@ -13,8 +11,8 @@ class App extends Component {
         const foundUser = props.users.find(user => user.id == props.userId);
         return foundUser ? foundUser.fullName : 'user not found';
     }
-
-    render() {
+ 
+    render() { 
         const { props } = this;
         return (
             <div className="main">
