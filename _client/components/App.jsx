@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { connectRequest, mutateAsync } from 'redux-query';
 import { createUser, deleteUser, updateUser } from '../actions/users';
 import { UserForm } from "./UserForm.jsx";
 
@@ -11,8 +13,8 @@ class App extends Component {
         const foundUser = props.users.find(user => user.id == props.userId);
         return foundUser ? foundUser.fullName : 'user not found';
     }
- 
-    render() { 
+
+    render() {
         const { props } = this;
         return (
             <div className="main">
@@ -38,29 +40,63 @@ class App extends Component {
     }
 };
 
+const queries = {
+    // get all users
+    allUsers: () => ({
+        url: '//localhost:3000/users',
+        update: {
+            users: (prev, next) => next,
+        },
+    }),
+    newUser: (user, optimistic) => {
+        const config = {
+            url: `//localhost:3000/users`,
+            body: user,
+            update: {
+                users: (previousUsers, nextUser) => {
+                   
+                    return [...previousUsers, ...nextUser]
+                },
+            },
+            //options: { method: 'POST' },
+        };
+
+ /*        if (true) {
+            config.optimisticUpdate = {
+                users: previousUsers => {
+                    console.log('OPT', [...previousUsers, .user])
+                    return [...previousUsers, user]
+                }
+            };
+        } */
+
+        return config;
+    },
+}
 
 
-const mapStateToProps =
-    ({
-        users,
-        userId
-    }) =>
-        ({
-            users,
-            userId
-        });
+const mapPropsToConfigs = () => queries.allUsers();
+
+
+var mapStateToProps = (state) => {
+    console.log(state)
+    var entities = state.entities,
+        userId = state.userId;
+    return {
+        users: entities.users,
+        userId: userId
+    };
+};
 
 const mapDispatchToProps = dispatch => ({
     deleteUser: user => { dispatch(deleteUser(user)); },
     updateUser: user => { dispatch(updateUser(user)); },
-    createUser: user => { dispatch(createUser(user)); },
+    createUser: user => { dispatch(mutateAsync(queries.newUser(user))); },
     loadUser: user => dispatch({ type: 'ROUTE_LOAD_USER', payload: { id: user.id } })
 });
 
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    connectRequest(mapPropsToConfigs)
 )(App);
-
-
