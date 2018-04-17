@@ -2,7 +2,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     devtool: 'source-map',
-    entry: './src/index.jsx',
+    entry: './_client/index.jsx',
     output: {
         path: __dirname + '/dist',
         filename: 'bundle.js',
@@ -19,7 +19,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/index.template.ejs'
+            template: './_client/index.template.ejs'
         })
     ],
     devServer: {
