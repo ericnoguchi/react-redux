@@ -2,9 +2,8 @@ const express = require('express');
 const app = express()
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
-    /*     res.header("   Access-Control-Allow-Header", "*"); */
-
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
 
@@ -49,7 +48,7 @@ app.post('/users/', (req, res) => {
         });
     }, 1000)
 
-}) 
+})
 
 // Read 
 app.get('/users/:id', (req, res) => {

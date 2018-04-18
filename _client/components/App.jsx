@@ -54,21 +54,21 @@ const queries = {
             body: user,
             update: {
                 users: (previousUsers, nextUser) => {
-                   
+
                     return [...previousUsers, ...nextUser]
                 },
             },
             //options: { method: 'POST' },
         };
 
- /*        if (true) {
-            config.optimisticUpdate = {
-                users: previousUsers => {
-                    console.log('OPT', [...previousUsers, .user])
-                    return [...previousUsers, user]
-                }
-            };
-        } */
+        /*        if (true) {
+                   config.optimisticUpdate = {
+                       users: previousUsers => {
+                           console.log('OPT', [...previousUsers, .user])
+                           return [...previousUsers, user]
+                       }
+                   };
+               } */
 
         return config;
     },
@@ -78,13 +78,13 @@ const queries = {
 const mapPropsToConfigs = () => queries.allUsers();
 
 
-var mapStateToProps = (state) => {
+const mapStateToProps = (state) => {
     console.log(state)
-    var entities = state.entities,
-        userId = state.userId;
+    const entities = state.entities;
+    const userId = state.userId;
     return {
         users: entities.users,
-        userId: userId
+        userId
     };
 };
 
