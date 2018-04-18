@@ -2,6 +2,9 @@ const express = require('express');
 const app = express()
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "*");
+
+    
     res.header("Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept");
     next();
@@ -42,19 +45,19 @@ app.post('/users/', (req, res) => {
     const newUser = req.body;
     newUser.id = newId;
     data.users.push(newUser);
-    setTimeout(() => {
-        res.json({
-            users: [newUser]
-        });
-    }, 1000)
+    res.json({
+        users: [newUser]
+    });
+
 
 })
 
-// Read 
+// Read  
 app.get('/users/:id', (req, res) => {
     const id = req.params.id;
+    const foundUser = data.users.filter(user => user.id == id);
     res.json({
-        users: data.users.filter(user => user.id == id)
+        user: foundUser? foundUser[0] : null
     })
 })
 
