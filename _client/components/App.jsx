@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { connectRequest, mutateAsync, requestAsync } from 'redux-query';
-import { createUser, deleteUser, updateUser } from '../actions/users';
+import { connectRequest, mutateAsync } from 'redux-query';
+import { userQueries } from '../user/queries';
 import { UserForm } from "./UserForm.jsx";
 
 
@@ -35,103 +35,9 @@ class App extends Component {
     }
 };
 
-const queries = {
-    // get all users
-    allUsers: () => ({
-        url: '//localhost:3000/users',
-        update: {
-            users: (prev, next) => next,
-        },
-    }),
-    getUser: (user) => ({
-        url: `//localhost:3000/users/${user.id}`,
-        force: true,
-        queryKey: `getUser${user.id}`,
-        update: {
-            user: (previousLoadedUser, loadedUser) => {
-                //console.log('user', previousLoadedUser, loadedUser)
-                return loadedUser
-            }
-        },
-    }),
-
-    createUser: (user, optimistic) => {
-        const config = {
-            url: `//localhost:3000/users`,
-            body: user,
-            update: {
-                users: (previousUsers, nextUser) => {
-
-                    return [...previousUsers, ...nextUser]
-                },
-            },
-            //options: { method: 'POST' },
-        };
-
-        /*        if (true) {
-                   config.optimisticUpdate = {
-                       users: previousUsers => {
-                           console.log('OPT', [...previousUsers, .user])
-                           return [...previousUsers, user]
-                       }
-                   };
-               } */
-
-        return config;
-    },
-
-    updateUser: (user, optimistic) => {
-        const config = {
-            url: `//localhost:3000/users/${user.id}`,
-            body: user,
-            update: {
-                users: (previousUsers, nextUsers) => {
-                    return [...nextUsers]
-                },
-            },
-            options: { method: 'PUT' },
-        };
-
-        /*        if (true) {
-                   config.optimisticUpdate = {
-                       users: previousUsers => {
-                           console.log('OPT', [...previousUsers, .user])
-                           return [...previousUsers, user]
-                       }
-                   };
-               } */
-
-        return config;
-    },
-
-    deleteUser: (user, optimistic) => {
-        const config = {
-            url: `//localhost:3000/users/${user.id}`,
-            body: user,
-            update: {
-                users: (previousUsers, nextUsers) => {
-                    return [...nextUsers]
-                },
-            },
-            options: { method: 'DELETE' },
-        };
-
-        /*        if (true) {
-                   config.optimisticUpdate = {
-                       users: previousUsers => {
-                           console.log('OPT', [...previousUsers, .user])
-                           return [...previousUsers, user]
-                       }
-                   };
-               } */
-
-        return config;
-    },
-
-}
 
 
-const mapPropsToConfigs = () => queries.allUsers();
+const mapPropsToConfigs = () => userQueries.allUsers();
 
 
 const mapStateToProps = (state) => {
@@ -154,17 +60,16 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => ({
     deleteUser: user => {
-        compose(dispatch, mutateAsync, queries.deleteUser)(user);
+        compose(dispatch, mutateAsync, userQueries.deleteUser)(user);
     },
     updateUser: user => {
-        compose(dispatch, mutateAsync, queries.updateUser)(user);
+        compose(dispatch, mutateAsync, userQueries.updateUser)(user);
     },
     createUser: user => {
-        compose(dispatch, mutateAsync, queries.createUser)(user);
+        compose(dispatch, mutateAsync, userQueries.createUser)(user);
     },
     loadUser: user => {
         dispatch({ type: 'ROUTE_LOAD_USER', payload: { id: user.id } })
-        compose(dispatch, requestAsync, queries.getUser)(user);
     }
 });
 

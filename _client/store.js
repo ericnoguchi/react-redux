@@ -5,7 +5,7 @@ import { connectRoutes } from 'redux-first-router';
 //@see https://amplitude.github.io/redux-query/#/
 import { entitiesReducer, queriesReducer, queryMiddleware } from 'redux-query';
 import initialState from "./initialState";
-import userIdReducer from "./reducers/userId";
+import routerUserIdReducer from "./reducers/userId";
 import usersReducer from './reducers/users';
 import routes from "./routes";
 
@@ -28,10 +28,7 @@ const rootReducer = combineReducers({
     queries: queriesReducer,
     // redux first router reducers
     location: routerReducer,
-    userId: userIdReducer,
-    // initial state reducer
-    
-    users: usersReducer,
+    userId: routerUserIdReducer,
 });
 
 // MIDDLEWARES
