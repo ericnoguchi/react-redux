@@ -1,5 +1,3 @@
-
-
 export const userQueries = {
     // get all users
     allUsers: () => ({
@@ -8,29 +6,30 @@ export const userQueries = {
             users: (prev, next) => next,
         },
     }),
-    getUser: (user) => ({
-        url: `//localhost:3000/users/${user.id}`,
-        force: true,
-        queryKey: `getUser${user.id}`,
-        update: {
-            user: (previousLoadedUser, loadedUser) => {
-                //console.log('user', previousLoadedUser, loadedUser)
-                return loadedUser
+    getUser(user) {
+        const config = {
+            url: `//localhost:3000/users/${user.id}`,
+            force: true,
+            queryKey: `getUser${user.id}`,
+            update: {
+                user: (previousLoadedUser, loadedUser) => {
+                    //console.log('user', previousLoadedUser, loadedUser)
+                    return loadedUser
+                }
             }
-        },
-    }),
+        }
+        return config;
+    },
 
-    createUser: (user, optimistic) => {
+    createUser(user, optimistic) {
         const config = {
             url: `//localhost:3000/users`,
             body: user,
             update: {
                 users: (previousUsers, nextUser) => {
-
                     return [...previousUsers, ...nextUser]
                 },
             },
-            //options: { method: 'POST' },
         };
 
         /*        if (true) {
@@ -45,7 +44,7 @@ export const userQueries = {
         return config;
     },
 
-    updateUser: (user, optimistic) => {
+    updateUser(user, optimistic) {
         const config = {
             url: `//localhost:3000/users/${user.id}`,
             body: user,
@@ -54,7 +53,9 @@ export const userQueries = {
                     return [...nextUsers]
                 },
             },
-            options: { method: 'PUT' },
+            options: {
+                method: 'PUT'
+            },
         };
 
         /*        if (true) {
@@ -69,7 +70,7 @@ export const userQueries = {
         return config;
     },
 
-    deleteUser: (user, optimistic) => {
+    deleteUser(user, optimistic) {
         const config = {
             url: `//localhost:3000/users/${user.id}`,
             body: user,
@@ -78,7 +79,9 @@ export const userQueries = {
                     return [...nextUsers]
                 },
             },
-            options: { method: 'DELETE' },
+            options: {
+                method: 'DELETE'
+            },
         };
 
         /*        if (true) {
