@@ -37,9 +37,12 @@ class App extends Component {
                     })}
                 </ul>
                 <UserForm onSubmit={(user) => createUser(user)} />
-                <StyledSpinner>
-                    {userQueryStatus && userQueryStatus.isPending && 'Spinner...'}
-                </StyledSpinner>
+                {
+                    userQueryStatus &&
+                    userQueryStatus.isPending &&
+                    <StyledSpinner>Spinner...</StyledSpinner>
+                }
+
                 {userQueryStatus && userQueryStatus.isFinished && loadedUser.fullName}
             </section>
         );
