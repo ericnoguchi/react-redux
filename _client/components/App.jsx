@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { connectRequest, mutateAsync } from 'redux-query';
+import { connectRequest, mutateAsync, querySelectors, getQueryKey } from 'redux-query';
 import { userQueries } from '../user/queries';
 import { UserForm } from "./UserForm.jsx";
 
@@ -9,27 +9,33 @@ import { UserForm } from "./UserForm.jsx";
 class App extends Component {
 
     render() {
-        const { props } = this;
-        console.log(props)
+        const {
+            createUser,
+            deleteUser,
+            loadUser,
+            loadedUser,
+            updateUser,
+            userQueryStatus,
+            users,
+        } = this.props;
         return (
             <div className="main">
                 <ul>
-                    {props.users.map(user => {
+                    {users.map(user => {
                         return (
                             <li className="item" key={user.id}>
                                 <div className="fullName">{user.id} - {user.fullName}</div>
                                 <UserForm
                                     user={{ ...user }}
-                                    onSubmit={(user) => props.updateUser(user)} />
-                                <button onClick={() => props.deleteUser(user)} >x</button>
-                                <button onClick={() => props.loadUser(user)}>Load</button>
+                                    onSubmit={(user) => updateUser(user)} />
+                                <button onClick={() => deleteUser(user)} >x</button>
+                                <button onClick={() => loadUser(user)}>Load</button>
                             </li>)
                     })}
                 </ul>
-                <UserForm onSubmit={(user) => props.createUser(user)} />
-                {
-                    props.userId && props.user && props.user.fullName
-                }
+                <UserForm onSubmit={(user) => createUser(user)} />
+                {userQueryStatus && userQueryStatus.isPending && 'Spinner...'}
+                {userQueryStatus && userQueryStatus.isFinished && loadedUser.fullName}
             </div>
         );
     }
@@ -37,13 +43,14 @@ class App extends Component {
 
 
 
-const mapPropsToConfigs = () => userQueries.allUsers();
+const mapPropsToConfigs = () => userQueries.allUsersQuery();
 
 
 const mapStateToProps = (state) => {
     const {
         userId,
-        entities
+        entities,
+        queries,
     } = state;
 
     const {
@@ -51,22 +58,33 @@ const mapStateToProps = (state) => {
         users,
     } = entities;
 
-    return {
-        user,
+    let props = {
+        loadedUser:user,
         users,
         userId
     };
+ 
+    if (userId) {
+        const userQueryConfig = userQueries.getUserQuery({ id: userId });
+        //listen to query status 
+        const userQueryStatus = {
+            isPending: querySelectors.isPending(queries, userQueryConfig),
+            isFinished: querySelectors.isFinished(queries, userQueryConfig)
+        }
+        props = { ...props, userQueryStatus };
+    }
+    return props;
 };
 
 const mapDispatchToProps = dispatch => ({
     deleteUser: user => {
-        compose(dispatch, mutateAsync, userQueries.deleteUser)(user);
+        compose(dispatch, mutateAsync, userQueries.deleteUserQuery)(user);
     },
     updateUser: user => {
-        compose(dispatch, mutateAsync, userQueries.updateUser)(user);
+        compose(dispatch, mutateAsync, userQueries.updateUserQuery)(user);
     },
     createUser: user => {
-        compose(dispatch, mutateAsync, userQueries.createUser)(user);
+        compose(dispatch, mutateAsync, userQueries.createUserQuery)(user);
     },
     loadUser: user => {
         dispatch({ type: 'ROUTE_LOAD_USER', payload: { id: user.id } })

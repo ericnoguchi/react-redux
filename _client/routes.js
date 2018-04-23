@@ -13,12 +13,10 @@ const userThunk = (dispatch, getState) => {
     //user id from URL
     const {
         id
-    } = getState().location.payload
+    } = getState().location.payload 
 
-    // dispatch redux query action to get user by id this returns a promise 
-    // that the router will wait on 
-    // this will also update state.entities.user which is mapped to props.user
-    return compose(dispatch, requestAsync, userQueries.getUser)({
+
+    return compose(dispatch, requestAsync, userQueries.getUserQuery)({
         id
     });
 

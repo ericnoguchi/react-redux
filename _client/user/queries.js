@@ -1,12 +1,12 @@
 export const userQueries = {
     // get all users
-    allUsers: () => ({
+    allUsersQuery: () => ({
         url: '//localhost:3000/users',
         update: {
             users: (prev, next) => next,
         },
     }),
-    getUser(user) {
+    getUserQuery(user) {
         const config = {
             url: `//localhost:3000/users/${user.id}`,
             force: true,
@@ -21,7 +21,7 @@ export const userQueries = {
         return config;
     },
 
-    createUser(user, optimistic) {
+    createUserQuery(user, optimistic) {
         const config = {
             url: `//localhost:3000/users`,
             body: user,
@@ -44,7 +44,7 @@ export const userQueries = {
         return config;
     },
 
-    updateUser(user, optimistic) {
+    updateUserQuery(user, optimistic) {
         const config = {
             url: `//localhost:3000/users/${user.id}`,
             body: user,
@@ -70,7 +70,7 @@ export const userQueries = {
         return config;
     },
 
-    deleteUser(user, optimistic) {
+    deleteUserQuery(user, optimistic) {
         const config = {
             url: `//localhost:3000/users/${user.id}`,
             body: user,
