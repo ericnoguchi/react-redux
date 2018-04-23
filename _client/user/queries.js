@@ -64,7 +64,7 @@ export const userQueries = {
                            console.log('OPT', [...previousUsers, .user])
                            return [...previousUsers, user]
                        }
-                   };
+                   }; 
                } */
 
         return config;

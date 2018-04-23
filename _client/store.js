@@ -6,7 +6,6 @@ import { connectRoutes } from 'redux-first-router';
 import { entitiesReducer, queriesReducer, queryMiddleware } from 'redux-query';
 import initialState from "./initialState";
 import routerUserIdReducer from "./reducers/userId";
-import usersReducer from './reducers/users';
 import routes from "./routes";
 
 const history = createHistory();

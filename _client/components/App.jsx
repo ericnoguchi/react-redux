@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { connectRequest, mutateAsync, querySelectors, getQueryKey } from 'redux-query';
+import { connectRequest, mutateAsync, querySelectors } from 'redux-query';
 import { userQueries } from '../user/queries';
 import { UserForm } from "./UserForm.jsx";
 
