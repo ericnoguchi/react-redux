@@ -4,8 +4,11 @@ import { compose } from 'redux';
 import { connectRequest, mutateAsync, querySelectors } from 'redux-query';
 import { userQueries } from '../user/queries';
 import { UserForm } from "./UserForm.jsx";
+import styled from "styled-components";
 
-
+const StyledSpinner = styled.span`
+    color:${props => props.theme.spinnerColor};
+`;
 class App extends Component {
 
     render() {
@@ -19,7 +22,7 @@ class App extends Component {
             users,
         } = this.props;
         return (
-            <div className="main">
+            <section>
                 <ul>
                     {users.map(user => {
                         return (
@@ -34,13 +37,14 @@ class App extends Component {
                     })}
                 </ul>
                 <UserForm onSubmit={(user) => createUser(user)} />
-                {userQueryStatus && userQueryStatus.isPending && 'Spinner...'}
+                <StyledSpinner>
+                    {userQueryStatus && userQueryStatus.isPending && 'Spinner...'}
+                </StyledSpinner>
                 {userQueryStatus && userQueryStatus.isFinished && loadedUser.fullName}
-            </div>
+            </section>
         );
     }
 };
-
 
 
 const mapPropsToConfigs = () => userQueries.allUsersQuery();
@@ -59,11 +63,11 @@ const mapStateToProps = (state) => {
     } = entities;
 
     let props = {
-        loadedUser:user,
+        loadedUser: user,
         users,
         userId
     };
- 
+
     if (userId) {
         const userQueryConfig = userQueries.getUserQuery({ id: userId });
         //listen to query status 

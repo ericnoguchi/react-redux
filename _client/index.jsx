@@ -1,16 +1,23 @@
+import AppContainer from './components/App.jsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import AppContainer from './components/App.jsx';
 import store from './store.js';
+import { Provider } from 'react-redux';
+import { ThemeProvider } from 'styled-components';
 
-// Create a history of your choosing (we're using a browser history in this case)
-// const history = createHistory();
+
+// Define what props.theme will look like
+const theme = {
+    main: 'blue',
+    spinnerColor: 'red'
+};
 
 
 ReactDOM.render(
     <Provider store={store}>
-        <AppContainer />
+        <ThemeProvider theme={theme}>
+            <AppContainer />
+        </ThemeProvider>
     </Provider>,
     document.getElementById('root')
 );
