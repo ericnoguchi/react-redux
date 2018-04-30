@@ -1,13 +1,88 @@
 import React, { Component } from 'react';
+import Form from "react-jsonschema-form";
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { connectRequest, mutateAsync, querySelectors } from 'redux-query';
+import styled from "styled-components";
 import { userQueries } from '../user/queries';
 import { UserForm } from "./UserForm.jsx";
-import styled from "styled-components";
+
+
+const schema = {
+    "type": "object",
+    "properties": {
+        "TV killed the radio star": {
+            "title": "Your favourite state",
+            "type": "object",
+            "required": [
+                "malaysian_state",
+            ],
+            "properties": {
+                "malaysian_state": {
+                    "type": "string",
+                    "title": "Malaysian states",
+                    "enum": [
+                        "Kuala Lumpur",
+                        "Johor",
+                        "Kedah",
+                        "Kelantan",
+                        "Melaka",
+                        "Negeri Sembilan",
+                        "Pahang",
+                        "Perak",
+                        "Perlis",
+                        "Pulau Pinang",
+                        "Sabah",
+                        "Sarawak",
+                        "Selangor",
+                        "Terengganu",
+                        "Wilayah Persekutuan"
+                    ]
+                }
+            }
+        },
+        title:{
+            type:'string'
+        }
+    }
+};
+
+const uiSchema = {
+    "TV killed the radio star": {
+        "malaysian_state": {
+            "ui:widget": "radio"
+        }
+    }
+};
+
+function CustomFieldTemplate(props) {
+    const {id, classNames, label, help, required, description, errors, children} = props;
+    return (
+      <div className='bullshit'>
+        <label htmlFor={id}>{label}{required ? "*" : null}</label>
+        {description}
+        {children}
+        {errors}
+        {help}
+      </div>
+    );
+  }
+
+const formData = {
+/*     title: "First task",
+    done: true,
+    radios: [{ value: true }, { value: false }] */
+};
+
+const onSubmit = ({ formData }) => console.log("Data submitted: ", formData);
+const onError = (errors) => console.log("I have", errors.length, "errors to fix");
 
 const StyledSpinner = styled.span`
     color:${props => props.theme.spinnerColor};
+`;
+
+const StyledSection = styled.section`
+    padding:${props => props.theme.padding};
 `;
 class App extends Component {
 
@@ -22,7 +97,7 @@ class App extends Component {
             users,
         } = this.props;
         return (
-            <section>
+            <StyledSection>
                 <ul>
                     {users.map(user => {
                         return (
@@ -44,7 +119,21 @@ class App extends Component {
                 }
 
                 {userQueryStatus && userQueryStatus.isFinished && loadedUser.fullName}
-            </section>
+                <br /><br />
+                <div className="row">
+                    <div className="col-md-4">
+                        <Form
+                        /*     FieldTemplate={CustomFieldTemplate}  */
+                            schema={schema}
+                            formData={formData}
+                            uiSchema={uiSchema}
+                            onSubmit={onSubmit}
+                            onError={onError}
+                        />
+                    </div>
+                </div>
+
+            </StyledSection>
         );
     }
 };

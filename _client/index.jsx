@@ -8,6 +8,7 @@ import { ThemeProvider } from 'styled-components';
 
 // Define what props.theme will look like
 const theme = {
+    padding:'20px',
     main: 'blue',
     spinnerColor: 'red'
 };

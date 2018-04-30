@@ -2,6 +2,7 @@
     // This file is required for VSCode to understand webpack aliases
     "compilerOptions": {
         // This must be specified if "paths" is set
+        "jsx": "react",
         "baseUrl": "./",
         // Relative to "baseUrl"
         "paths": {
