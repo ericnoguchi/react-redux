@@ -29,6 +29,7 @@
     "eslint": "^4.19.1",
     "eslint-plugin-react": "^7.7.0",
     "html-webpack-plugin": "^3.2.0",
+    "jest": "^22.4.3",
     "nodemon": "^1.17.3",
     "npm-upgrade": "^1.3.0",
     "rimraf": "^2.6.2",
@@ -41,7 +42,8 @@
     "build": "rimraf ./dist  && webpack -p --hide-modules",
     "start": "webpack-dev-server",
     "startServer": "nodemon ./_server/index.js",
-    "upgrade": "npm-upgrade"
+    "upgrade": "npm-upgrade",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC"
