@@ -35,7 +35,7 @@ export class UserForm extends Component {
                     onChange={(e) => { this.handleChange(e) }}
                     value={this.state.user.fullName}
                 />
-                <button type="submit">OK</button>
+                <button className="button" type="submit">OK</button>
             </form>
         );
     }

@@ -1,4 +1,4 @@
-import {
+/* import {
     CREATE_USER,
     DELETE_USER,
     UPDATE_USER
@@ -24,4 +24,4 @@ export default function usersReducer(users = [], action) {
         default:
             return users;
     }
-}
+} */
