@@ -6,17 +6,17 @@ import { connectRequest, mutateAsync, querySelectors } from 'redux-query';
 import styled from "styled-components";
 import { userQueries } from '../user/queries';
 import { UserForm } from "./UserForm.jsx";
-
+var ReactOverflowTooltip = require('react-overflow-tooltip')
 
 const schema = {
     "type": "object",
     "properties": {
         "TV killed the radio star": {
             "title": "Your favourite state",
-            "type": "object",
             "required": [
                 "malaysian_state",
             ],
+            "type": "object",
             "properties": {
                 "malaysian_state": {
                     "type": "string",
@@ -41,8 +41,8 @@ const schema = {
                 }
             }
         },
-        title:{
-            type:'string'
+        title: {
+            type: 'string'
         }
     }
 };
@@ -56,25 +56,25 @@ const uiSchema = {
 };
 
 function CustomFieldTemplate(props) {
-    const {id, classNames, label, help, required, description, errors, children} = props;
+    const { id, classNames, label, help, required, description, errors, children } = props;
     return (
-      <div className='bullshit'>
-        <label htmlFor={id}>{label}{required ? "*" : null}</label>
-        {description}
-        {children}
-        {errors}
-        {help}
-      </div>
+        <div className='bullshit'>
+            <label htmlFor={id}>{label}{required ? "*" : null}</label>
+            {description}
+            {children}
+            {errors}
+            {help}
+        </div>
     );
-  }
+}
 
 const formData = {
-/*     title: "First task",
-    done: true,
-    radios: [{ value: true }, { value: false }] */
+    /*     title: "First task",
+        done: true,
+        radios: [{ value: true }, { value: false }] */
 };
 
-const onSubmit = ({ formData }) => console.log("Data submitted: ", formData);
+const onSubmit = (form) => console.log("Data submitted: ", form);
 const onError = (errors) => console.log("I have", errors.length, "errors to fix");
 
 const StyledSpinner = styled.span`
@@ -84,6 +84,77 @@ const StyledSpinner = styled.span`
 const StyledSection = styled.section`
     padding:${props => props.theme.padding};
 `;
+
+const StyledSpan = styled.span`
+   color:red;
+`;
+
+class ET extends Component {
+
+    constructor(props) {
+        super(props);
+        this.innerEle = React.createRef();
+        this.outerEle = React.createRef();
+        this.mouseEnter = this.mouseEnter.bind(this);
+        this.mouseLeave = this.mouseLeave.bind(this);
+
+
+    }
+
+    componentDidMount() {
+        const nodeInner = this.innerEle.current;
+        const nodeOuter = this.outerEle.current;
+
+
+        nodeOuter.style.border = '1px solid black';
+        nodeOuter.style.width = '150px';
+        nodeOuter.style.whiteSpace = 'nowrap';
+        nodeOuter.style.overflow = 'hidden';
+        nodeOuter.style.textOverflow = 'ellipsis';
+        nodeOuter.style.display = 'inline-block';
+
+        nodeInner.style.transition = 'left 3s';
+        nodeInner.style.color = 'red';
+        nodeInner.style.position = 'relative';
+        nodeInner.style.left = '0';
+
+
+
+    }
+
+
+    mouseEnter() {
+
+        const nodeInner = this.innerEle.current;
+        const nodeOuter = this.outerEle.current;
+
+        nodeOuter.style.textOverflow = 'clip';
+        nodeInner.style.transition = 'left 3s';
+        nodeInner.style.left = `-${wDiff}px`;
+
+        const wDiff = nodeInner.offsetWidth - nodeOuter.offsetWidth;
+        console.log('wDiff', wDiff)
+
+    }
+    mouseLeave() {
+        console.log('leave')
+        const nodeInner = this.innerEle.current;
+        const nodeOuter = this.outerEle.current;
+        nodeOuter.style.textOverflow = 'ellipsis';
+        nodeInner.style.transition = '';
+        nodeInner.style.left = `0`;
+
+    }
+    render() {
+        return (<div ref={this.outerEle}
+            onMouseOver={this.mouseEnter}
+            onMouseOut={this.mouseLeave} >
+            <span ref={this.innerEle} >
+                {this.props.children}
+            </span>
+        </div>)
+    }
+}
 class App extends Component {
 
     render() {
@@ -98,40 +169,9 @@ class App extends Component {
         } = this.props;
         return (
             <StyledSection>
-                <ul>
-                    {users.map(user => {
-                        return (
-                            <li className="item" key={user.id}>
-                                <div className="fullName">{user.id} - {user.fullName}</div>
-                                <UserForm
-                                    user={{ ...user }}
-                                    onSubmit={(user) => updateUser(user)} />
-                                <button onClick={() => deleteUser(user)} >x</button>
-                                <button onClick={() => loadUser(user)}>Load</button>
-                            </li>)
-                    })}
-                </ul>
-                <UserForm onSubmit={(user) => createUser(user)} />
-                {
-                    userQueryStatus &&
-                    userQueryStatus.isPending &&
-                    <StyledSpinner>Spinner...</StyledSpinner>
-                }
-
-                {userQueryStatus && userQueryStatus.isFinished && loadedUser.fullName}
-                <br /><br />
-                <div className="row">
-                    <div className="col-md-4">
-                        <Form
-                        /*     FieldTemplate={CustomFieldTemplate}  */
-                            schema={schema}
-                            formData={formData}
-                            uiSchema={uiSchema}
-                            onSubmit={onSubmit}
-                            onError={onError}
-                        />
-                    </div>
-                </div>
+                <ReactOverflowTooltip title='too long text'>
+                    <div>too long text</div>
+                </ReactOverflowTooltip>
 
             </StyledSection>
         );
